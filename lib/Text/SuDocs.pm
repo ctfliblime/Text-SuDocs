@@ -38,17 +38,26 @@ sub parse {
     $original =~ qr{
         (\p{IsAlpha}+)\s*                         #Agency
         (\p{IsDigit}+)\s*\.\s*                    #Subagency
-        (\p{IsAlnum}+)/?([\p{IsAlnum}-]+)?\s*:\s* #Series/RelSeries
+        (\p{IsAlnum}+)(/[\p{IsAlnum}-]+)?\s*:\s* #Series/RelSeries
         (.*)                                      #Document
         }x;
-    #{ no warnings; print "$original\n>>>$1|$2|$3|$4|$5<<<\n";}
     croak if (!($1 && $2 && $3));
     $self->agency($1);
     $self->subagency($2);
     $self->series($3);
-    $self->relatedseries($4);
+    if ($4) {
+        my $rser = $4;
+        $rser =~ s{^/}{};
+        $self->relatedseries($rser);
+    }
     $self->document($5);
-    #print Dumper $self;
+    if (0) {
+        no warnings;
+        printf "%s\n>>>%s|%s|%s|%s|%s<<<\n",
+            $self->original, $self->agency, $self->subagency,
+            $self->series, $self->relatedseries, $self->document;
+        #print Dumper $self;
+    }
 }
 
 sub class_stem {
