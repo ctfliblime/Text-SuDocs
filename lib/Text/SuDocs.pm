@@ -30,10 +30,26 @@ sub BUILD {
     }
 }
 
+around 'original' => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    if (scalar @_) {
+        $self->$orig(@_);
+        $self->parse();
+    }
+
+    return $self->$orig();
+};
+
 sub parse {
     my $self = shift;
     my $original = shift // $self->original;
     return if ! defined $original;
+
+    for (qw(agency subagency series relatedseries document)) {
+        $self->$_(qw{});
+    }
 
     $original =~ qr{
         (\p{IsAlpha}+)\s*                         #Agency

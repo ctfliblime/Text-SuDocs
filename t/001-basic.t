@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use Test::More tests => 23;
+use Test::More tests => 24;
 use Test::Exception;
 
 BEGIN {
@@ -63,3 +63,7 @@ for my $t (@accurate_strings) {
         }
     }
 }
+
+my $s = Text::SuDocs->new();
+$s->original('EP 1.23: 998');
+is($s->agency, 'EP');
