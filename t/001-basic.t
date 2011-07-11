@@ -32,38 +32,40 @@ my @fail_strings = (
 map { dies_ok {Text::SuDocs->new($_)} "Intentional fail on bad string '$_'" } @fail_strings;
 
 my @accurate_strings = (
-    {original=>'EP 1.23: 998',
+    {original=>'EP 1.23: 998', normal=>'EP 1.23: 998', stem=>'EP 1.23',
      agency=>'EP', subagency=>'1', series=>'23', relatedseries=>undef, document=>'998'},
-    {original=>'EP 1.23: 91-44',
+    {original=>'EP 1.23: 91-44', normal=>'EP 1.23: 91-44', stem=>'EP 1.23',
      agency=>'EP', subagency=>'1', series=>'23', relatedseries=>undef, document=>'91-44'},
-    {original=>'C 51. 11: EN 8/995',
+    {original=>'C 51. 11: EN 8/995', normal=>'C 51.11: EN 8/995', stem=>'C 51.11',
      agency=>'C', subagency=>'51', series=>'11', relatedseries=>undef, document=>'EN 8/995'},
-    {original=>'C 51. 11: 23',
+    {original=>'C 51. 11: 23', normal=>'C 51.11: 23',  stem=>'C 51.11',
      agency=>'C', subagency=>'51', series=>'11', relatedseries=>undef, document=>'23'},
-    {original=>'C 51. 11/8: 995-96',
+    {original=>'C 51. 11/8: 995-96', normal=>'C 51.11/8: 995-96', stem=>'C 51.11/8',
      agency=>'C', subagency=>'51', series=>'11', relatedseries=>'8', document=>'995-96'},
-    {original=>'T 63.209/8-3:994/1',
+    {original=>'T 63.209/8-3:994/1', normal=>'T 63.209/8-3: 994/1', stem=>'T 63.209/8-3',
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
-    {original=>'T63.209/8-3:994/1',
+    {original=>'T63.209/8-3:994/1', normal=>'T 63.209/8-3: 994/1', stem=>'T 63.209/8-3',
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
-    {original=>'T63.209/8-3 : 994/1',
+    {original=>'T63.209/8-3 : 994/1', normal=>'T 63.209/8-3: 994/1', stem=>'T 63.209/8-3',
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
-    {original=>'T63.209/8-3 :994/1',
+    {original=>'T63.209/8-3 :994/1', normal=>'T 63.209/8-3: 994/1', stem=>'T 63.209/8-3',
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
-    {original=>'T63 .209/8-3:994/1',
+    {original=>'T63 .209/8-3:994/1', normal=>'T 63.209/8-3: 994/1', stem=>'T 63.209/8-3',
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
     );
 for my $t (@accurate_strings) {
     subtest "Parsing $t->{original}" => sub {
-        plan tests => 6;
+        plan tests => 8;
         my $s = new_ok('Text::SuDocs' => [$t->{original}]);
         for my $f (qw(agency subagency series relatedseries document)) {
             no warnings 'uninitialized';
             is($s->$f, $t->{$f}, "$f: $t->{$f} eq ".$s->$f);
         }
-    }
+        is($s->normal_string, $t->{normal}, 'normalized (full)');
+        is($s->normal_string(class_stem=>1), $t->{stem}, 'normalized (stem)');
+   }
 }
 
 my $s = Text::SuDocs->new();
 $s->original('EP 1.23: 998');
-is($s->agency, 'EP');
+is($s->agency, 'EP', 'setting original triggers parse()');

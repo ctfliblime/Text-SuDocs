@@ -4,7 +4,6 @@ package Text::SuDocs;
 
 use Any::Moose;
 use Carp;
-use Data::Dumper;
 
 has [qw(original agency subagency series relatedseries document)] => (
     is => 'rw',
@@ -67,22 +66,32 @@ sub parse {
         $self->relatedseries($rser);
     }
     $self->document($5);
-    if (0) {
-        no warnings;
-        printf "%s\n>>>%s|%s|%s|%s|%s<<<\n",
-            $self->original, $self->agency, $self->subagency,
-            $self->series, $self->relatedseries, $self->document;
-        #print Dumper $self;
+}
+
+sub normal_string {
+    my $self = shift;
+    my %args = (ref $_[0]) ? %{$_[0]} : @_;
+
+    my $sudocs = sprintf(
+        '%s %d.%s%s',
+        $self->agency,
+        $self->subagency,
+        $self->series,
+        ($self->relatedseries) ? '/'.$self->relatedseries : '',
+        );
+    unless ($args{class_stem}) {
+        $sudocs .= ': '.$self->document;
     }
+    return $sudocs;
 }
 
-sub class_stem {
-}
+sub sortable_string {
+    my $self = shift;
+    my $args = shift // {};
 
-sub set {
-}
-
-sub as_string {
+    if ($args->{class_stem}) {
+        
+    }
 }
 
 1;
