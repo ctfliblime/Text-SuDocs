@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use Test::More tests => 24;
+use Test::More tests => 26;
 use Test::Exception;
 
 BEGIN {
@@ -52,11 +52,16 @@ my @accurate_strings = (
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
     {original=>'T63 .209/8-3:994/1', normal=>'T 63.209/8-3: 994/1', stem=>'T 63.209/8-3',
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
+    {original=>'Y 3.EQ 2:1/', normal=>'Y 3.EQ 2: 1/', stem=>'Y 3.EQ 2',
+     agency=>'Y', subagency=>'3', committee=>'EQ', series=>'2', relatedseries=>undef, document=>'1/'},
+    {original=>'Y 3.F 31/21-3:2 In 8', normal=>'Y 3.F 31/21-3: 2 In 8', stem=>'Y 3.F 31/21-3',
+     agency=>'Y', subagency=>'3', committee=>'F', series=>'31', relatedseries=>'21-3', document=>'2 In 8'},
     );
 for my $t (@accurate_strings) {
     subtest "Parsing $t->{original}" => sub {
         plan tests => 8;
         my $s = new_ok('Text::SuDocs' => [$t->{original}]);
+        next if !$s;
         for my $f (qw(agency subagency series relatedseries document)) {
             no warnings 'uninitialized';
             is($s->$f, $t->{$f}, "$f: $t->{$f} eq ".$s->$f);

@@ -5,7 +5,9 @@ package Text::SuDocs;
 use Any::Moose;
 use Carp;
 
-has [qw(original agency subagency series relatedseries document)] => (
+our @subfields = qw{agency subagency committee series relatedseries document};
+
+has [qw(original), @subfields] => (
     is => 'rw',
     isa => 'Maybe[Str]',
     );
@@ -46,26 +48,24 @@ sub parse {
     my $original = shift // $self->original;
     return if ! defined $original;
 
-    for (qw(agency subagency series relatedseries document)) {
+    for (@Text::SuDocs::subfields) {
         $self->$_(qw{});
     }
 
     $original =~ qr{
         (\p{IsAlpha}+)\s*                         #Agency
         (\p{IsDigit}+)\s*\.\s*                    #Subagency
-        (\p{IsAlnum}+)(/[\p{IsAlnum}-]+)?\s*:\s* #Series/RelSeries
+        (?:(\p{IsAlpha}+)\s+)?                    #Committee
+        (\p{IsAlnum}+)(?:/([\p{IsAlnum}-]+))?\s*:\s*  #Series/RelSeries
         (.*)                                      #Document
         }x;
-    croak if (!($1 && $2 && $3));
+    croak if (!($1 && $2 && $4));
     $self->agency($1);
     $self->subagency($2);
-    $self->series($3);
-    if ($4) {
-        my $rser = $4;
-        $rser =~ s{^/}{};
-        $self->relatedseries($rser);
-    }
-    $self->document($5);
+    $self->committee($3);
+    $self->series($4);
+    $self->relatedseries($5);
+    $self->document($6);
 }
 
 sub normal_string {
@@ -73,9 +73,10 @@ sub normal_string {
     my %args = (ref $_[0]) ? %{$_[0]} : @_;
 
     my $sudocs = sprintf(
-        '%s %d.%s%s',
+        '%s %d.%s%s%s',
         $self->agency,
         $self->subagency,
+        ($self->committee) ? $self->committee . q{ } : '',
         $self->series,
         ($self->relatedseries) ? '/'.$self->relatedseries : '',
         );
