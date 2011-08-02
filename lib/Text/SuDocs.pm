@@ -48,9 +48,8 @@ sub parse {
     my $original = shift // $self->original;
     return if ! defined $original;
 
-    for (@Text::SuDocs::subfields) {
-        $self->$_(qw{});
-    }
+    chomp($original);
+    croak 'Invalid characters' if $original =~ qr{[^\p{IsAlnum}\s:/\-.<>]};
 
     $original =~ qr{
         (\p{IsAlpha}+)\s*                         #Agency
@@ -59,7 +58,7 @@ sub parse {
         (\p{IsAlnum}+)(?:/([\p{IsAlnum}-]+))?\s*:\s*  #Series/RelSeries
         (.*)                                      #Document
         }x;
-    croak if (!($1 && $2 && $4));
+    croak 'Unable to determine stem' if (!($1 && $2 && $4));
     $self->agency($1);
     $self->subagency($2);
     $self->committee($3);
@@ -81,7 +80,7 @@ sub normal_string {
         ($self->relatedseries) ? '/'.$self->relatedseries : '',
         );
     unless ($args{class_stem}) {
-        $sudocs .= ': '.$self->document;
+        $sudocs .= ':'.$self->document;
     }
     return $sudocs;
 }

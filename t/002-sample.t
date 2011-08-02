@@ -10,7 +10,9 @@ use Text::SuDocs;
 my @samples = <DATA>;
 
 for (@samples) {
+    chomp;
     my $s = new_ok('Text::SuDocs' => [$_], $_);
+    is($_, $s->normal_string);
 }
 
 done_testing();
@@ -1066,7 +1068,7 @@ Y 3.T 22/2:2/2003012420
 Y 3.T 22/2:2/2003012406
 Y 3.T 22/2:2/2003012559
 Y 3.T 22/2:OC 2/2
-Y 3.T 22/2: W 85
+Y 3.T 22/2:W 85
 Y 3.T 22/2:2 Ai 5
 Y 3.T 22/2:2 Au 8/6
 Y 3.T 22/2:2 B 65
@@ -1075,7 +1077,7 @@ Y 3.T 22/2:2 AD 9/2
 Y 3.T 22/2:2 AD 9/3
 Y 3.T 22/2:N 28
 Y 3.T 22:2 C 76/7
-Y 3.T22/2:2 M 91/SUM.
+Y 3.T 22/2:2 M 91/SUM.
 Y 3.T 22/2:2 ALIS
 Y 3.T 22/2:2 El 2/11
 Y 3.T 22/2:2 T 22/2 b
