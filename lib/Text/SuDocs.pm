@@ -50,6 +50,7 @@ sub parse {
 
     chomp($original);
     croak 'Invalid characters' if $original =~ qr{[^\p{IsAlnum}\s:/\-.<>]};
+    $original = uc $original;
 
     $original =~ qr{
         (\p{IsAlpha}+)\s*                         #Agency

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use Test::More tests => 28;
+use Test::More tests => 29;
 use Test::Exception;
 
 BEGIN {
@@ -34,6 +34,8 @@ my @fail_strings = (
 map { dies_ok {Text::SuDocs->new($_)} "Intentional fail on bad string '$_'" } @fail_strings;
 
 my @accurate_strings = (
+    {original=>'ep 1.23: 998', normal=>'EP 1.23:998', stem=>'EP 1.23',
+     agency=>'EP', subagency=>'1', series=>'23', relatedseries=>undef, document=>'998'},
     {original=>'EP 1.23: 998', normal=>'EP 1.23:998', stem=>'EP 1.23',
      agency=>'EP', subagency=>'1', series=>'23', relatedseries=>undef, document=>'998'},
     {original=>'EP 1.23: 91-44', normal=>'EP 1.23:91-44', stem=>'EP 1.23',
@@ -56,8 +58,8 @@ my @accurate_strings = (
      agency=>'T', subagency=>'63', series=>'209', relatedseries=>'8-3', document=>'994/1'},
     {original=>'Y 3.EQ 2:1/', normal=>'Y 3.EQ 2:1/', stem=>'Y 3.EQ 2',
      agency=>'Y', subagency=>'3', committee=>'EQ', series=>'2', relatedseries=>undef, document=>'1/'},
-    {original=>'Y 3.F 31/21-3:2 In 8', normal=>'Y 3.F 31/21-3:2 In 8', stem=>'Y 3.F 31/21-3',
-     agency=>'Y', subagency=>'3', committee=>'F', series=>'31', relatedseries=>'21-3', document=>'2 In 8'},
+    {original=>'Y 3.F 31/21-3:2 In 8', normal=>'Y 3.F 31/21-3:2 IN 8', stem=>'Y 3.F 31/21-3',
+     agency=>'Y', subagency=>'3', committee=>'F', series=>'31', relatedseries=>'21-3', document=>'2 IN 8'},
     );
 for my $t (@accurate_strings) {
     subtest "Parsing $t->{original}" => sub {

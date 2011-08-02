@@ -12,7 +12,7 @@ my @samples = <DATA>;
 for (@samples) {
     chomp;
     my $s = new_ok('Text::SuDocs' => [$_], $_);
-    is($_, $s->normal_string);
+    is(uc($_), $s->normal_string);
 }
 
 done_testing();
