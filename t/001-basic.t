@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
-use Test::More tests => 29;
+use Test::More tests => 5;
 use Test::Exception;
 
 BEGIN {
@@ -19,7 +19,10 @@ my @success_argsets = (
     {agency => 'Y', subagency => 3, series => 186, relatedseries => 2},
     {agency => 'Y', subagency => 3, series => 186, relatedseries => 2, document => 'asdf'},
     );
-map { isa_ok(Text::SuDocs->new($_), 'Text::SuDocs') } @success_argsets;
+subtest 'Setting args during instantiation' => sub {
+    map { isa_ok(Text::SuDocs->new($_), 'Text::SuDocs') } @success_argsets;
+    done_testing();
+};
 
 my @fail_strings = (
     'EP 1 998',
@@ -31,7 +34,10 @@ my @fail_strings = (
     'EP 1.23: 998@',
     'EP 1.23: +998',
     );
-map { dies_ok {Text::SuDocs->new($_)} "Intentional fail on bad string '$_'" } @fail_strings;
+subtest 'These strings should fail' => sub {
+    map { dies_ok {Text::SuDocs->new($_)} "Intentional fail on bad string '$_'" } @fail_strings;
+    done_testing();
+};
 
 my @accurate_strings = (
     {original=>'ep 1.23: 998', normal=>'EP 1.23:998', stem=>'EP 1.23',
@@ -61,19 +67,22 @@ my @accurate_strings = (
     {original=>'Y 3.F 31/21-3:2 In 8', normal=>'Y 3.F 31/21-3:2 IN 8', stem=>'Y 3.F 31/21-3',
      agency=>'Y', subagency=>'3', committee=>'F', series=>'31', relatedseries=>'21-3', document=>'2 IN 8'},
     );
-for my $t (@accurate_strings) {
-    subtest "Parsing $t->{original}" => sub {
-        plan tests => 8;
-        my $s = new_ok('Text::SuDocs' => [$t->{original}]);
-        next if !$s;
-        for my $f (qw(agency subagency series relatedseries document)) {
-            no warnings 'uninitialized';
-            is($s->$f, $t->{$f}, "$f: $t->{$f} eq ".$s->$f);
+subtest 'Normalization' => sub {
+    for my $t (@accurate_strings) {
+        subtest "Parsing $t->{original}" => sub {
+            plan tests => 8;
+            my $s = new_ok('Text::SuDocs' => [$t->{original}]);
+            next if !$s;
+            for my $f (qw(agency subagency series relatedseries document)) {
+                no warnings 'uninitialized';
+                is($s->$f, $t->{$f}, "$f: $t->{$f} eq ".$s->$f);
+            }
+            is($s->normal_string, $t->{normal}, 'normalized (full)');
+            is($s->normal_string(class_stem=>1), $t->{stem}, 'normalized (stem)');
         }
-        is($s->normal_string, $t->{normal}, 'normalized (full)');
-        is($s->normal_string(class_stem=>1), $t->{stem}, 'normalized (stem)');
-   }
-}
+    }
+    done_testing();
+};
 
 my $s = Text::SuDocs->new();
 $s->original('EP 1.23: 998');
