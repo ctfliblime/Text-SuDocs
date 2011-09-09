@@ -67,6 +67,8 @@ my @accurate_strings = (
      agency=>'Y', subagency=>'3', committee=>'EQ', series=>'2', relatedseries=>undef, document=>'1/'},
     {original=>'Y 3.F 31/21-3:2 In 8', normal=>'Y 3.F 31/21-3:2 IN 8', stem=>'Y 3.F 31/21-3',
      agency=>'Y', subagency=>'3', committee=>'F', series=>'31', relatedseries=>'21-3', document=>'2 IN 8'},
+    {original=>'HE 1. 2:AC 6/7', normal=>'HE 1.2:AC 6/7', stem=>'HE 1.2',
+     agency=>'HE', subagency=>'1', series=>'2', relatedseries=>undef, document=>'AC 6/7'},
     );
 subtest 'Normalization' => sub {
     for my $t (@accurate_strings) {
