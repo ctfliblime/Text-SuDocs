@@ -33,6 +33,7 @@ my @fail_strings = (
     'EP 1998:',
     'EP 1.23: 998@',
     'EP 1.23: +998',
+    'PR EX 28.8:C 76',
     );
 subtest 'These strings should fail' => sub {
     map { dies_ok {Text::SuDocs->new($_)} "Intentional fail on bad string '$_'" } @fail_strings;

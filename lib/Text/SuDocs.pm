@@ -53,7 +53,7 @@ sub parse {
     $original = uc $original;
 
     $original =~ qr{
-        (\p{IsAlpha}+)\s*                         #Agency
+        ^(\p{IsAlpha}+)\s*                        #Agency
         (\p{IsDigit}+)\s*\.\s*                    #Subagency
         (?:(\p{IsAlpha}+)\s+)?                    #Committee
         (\p{IsAlnum}+)(?:/([\p{IsAlnum}-]+))?\s*:\s*  #Series/RelSeries
