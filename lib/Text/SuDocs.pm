@@ -56,7 +56,8 @@ sub parse {
         ^(\p{IsAlpha}+)\s*                        #Agency
         (\p{IsDigit}+)\s*\.\s*                    #Subagency
         (?:(\p{IsAlpha}+)\s+)?                    #Committee
-        (\p{IsDigit}+)(?:/([\p{IsAlnum}-]+))?\s*:\s*  #Series/RelSeries
+        (\p{IsDigit}+)                            #Series
+        (?:/(\p{IsAlnum}+)(-\p{IsAlnum}+)?)?\s*:\s*  #RelSeries
         (.*)                                      #Document
         }x;
     croak 'Unable to determine stem' if (!($1 && $2 && $4));
@@ -64,8 +65,11 @@ sub parse {
     $self->subagency($2);
     $self->committee($3);
     $self->series($4);
-    $self->relatedseries($5);
-    $self->document($6);
+    my $relseries =
+        (!$5) ? undef :
+        ($6) ? $5.$6 : $5;
+    $self->relatedseries($relseries);
+    $self->document($7);
 }
 
 sub normal_string {
