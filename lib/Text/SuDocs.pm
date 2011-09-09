@@ -56,7 +56,7 @@ sub parse {
         ^(\p{IsAlpha}+)\s*                        #Agency
         (\p{IsDigit}+)\s*\.\s*                    #Subagency
         (?:(\p{IsAlpha}+)\s+)?                    #Committee
-        (\p{IsAlnum}+)(?:/([\p{IsAlnum}-]+))?\s*:\s*  #Series/RelSeries
+        (\p{IsDigit}+)(?:/([\p{IsAlnum}-]+))?\s*:\s*  #Series/RelSeries
         (.*)                                      #Document
         }x;
     croak 'Unable to determine stem' if (!($1 && $2 && $4));
