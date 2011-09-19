@@ -38,6 +38,10 @@ my @accurate_strings = (
      agency=>'Y', subagency=>'3', committee=>'F', series=>'31', relatedseries=>'21-3', document=>'2 IN 8'},
     {original=>'HE 1. 2:AC 6/7', normal=>'HE 1.2:AC 6/7', stem=>'HE 1.2',
      agency=>'HE', subagency=>'1', series=>'2', relatedseries=>undef, document=>'AC 6/7'},
+    {original=>'XJH', normal=>'XJH', stem=>'XJH',
+     agency=>'XJH', subagency=>undef, series=>undef, relatedseries=>undef, document=>undef},
+    {original=>'XJS', normal=>'XJS', stem=>'XJS',
+     agency=>'XJS', subagency=>undef, series=>undef, relatedseries=>undef, document=>undef},
     );
 subtest 'Normalization' => sub {
     for my $t (@accurate_strings) {

@@ -52,6 +52,11 @@ sub parse {
     croak 'Invalid characters' if $original =~ qr{[^\p{IsAlnum}\s:/\-.<>]};
     $original = uc $original;
 
+    if ($original ~~ [qw(XJH XJS)]) {
+      $self->agency($original);
+      return $self;
+    }
+
     $original =~ qr{
         ^(\p{IsAlpha}+)\s*                        #Agency
         (\p{IsDigit}+)\s*\.\s*                    #Subagency
@@ -61,6 +66,7 @@ sub parse {
         (.*)                                      #Document
         }x;
     croak 'Unable to determine stem' if (!($1 && $2 && $4));
+
     $self->agency($1);
     $self->subagency($2);
     $self->committee($3);
@@ -70,11 +76,15 @@ sub parse {
         ($6) ? $5.$6 : $5;
     $self->relatedseries($relseries);
     $self->document($7);
+
+    return $self;
 }
 
 sub normal_string {
     my $self = shift;
     my %args = (ref $_[0]) ? %{$_[0]} : @_;
+
+    return $self->agency if ($self->agency ~~ [qw(XJH XJS)]);
 
     my $sudocs = sprintf(
         '%s %d.%s%s%s',
