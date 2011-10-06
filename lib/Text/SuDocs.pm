@@ -108,6 +108,7 @@ sub sortable_string {
     my $s = $self->normal_string;
     my $format = sprintf '%%0%dd', $pad;
     $s =~ s/\b(\d+)\b/sprintf $format, $1/xge;
+    $s =~ s/\s/_/g;
 
     return $s;
 }
