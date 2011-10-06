@@ -3,6 +3,7 @@ package Text::SuDocs;
 # ABSTRACT: parse and normalize SuDocs numbers
 
 use Any::Moose;
+use namespace::autoclean;
 use Carp;
 
 our @subfields = qw{agency subagency committee series relatedseries document};
@@ -111,4 +112,5 @@ sub sortable_string {
     return $s;
 }
 
+__PACKAGE__->meta()->make_immutable();
 1;

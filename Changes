@@ -1,2 +1,3 @@
 0.001: Initial release
 0.008: Implement zero-padded sortable string output
+0.009: Moose cleanups
