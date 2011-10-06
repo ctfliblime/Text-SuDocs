@@ -102,11 +102,13 @@ sub normal_string {
 
 sub sortable_string {
     my $self = shift;
-    my $args = shift // {};
+    my $pad = shift // 8;
 
-    if ($args->{class_stem}) {
-        
-    }
+    my $s = $self->normal_string;
+    my $format = sprintf '%%0%dd', $pad;
+    $s =~ s/\b(\d+)\b/sprintf $format, $1/xge;
+
+    return $s;
 }
 
 1;
