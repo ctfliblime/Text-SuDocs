@@ -28,7 +28,7 @@ my @accurate_strings = (
      agency=>'EP', subagency=>'1', series=>'23',
      relatedseries=>undef, document=>'91-44'},
 
-    {original=>'C 51. 11: EN 8/995',
+    {original=>'C 51. 11:  EN 8/995',
      sortable=>'C_00000051.00000011:EN_00000008/00000995',
      normal=>'C 51.11:EN 8/995', stem=>'C 51.11',
      agency=>'C', subagency=>'51', series=>'11',
@@ -40,13 +40,7 @@ my @accurate_strings = (
      agency=>'C', subagency=>'51', series=>'11',
      relatedseries=>undef, document=>'23'},
 
-    {original=>'C 51. 11/8: 995-96',
-     sortable=>'C_00000051.00000011/00000008:00000995-00000096',
-     normal=>'C 51.11/8:995-96', stem=>'C 51.11/8',
-     agency=>'C', subagency=>'51', series=>'11',
-     relatedseries=>'8', document=>'995-96'},
-
-    {original=>'T 63.209/8-3:994/1',
+    {original=>'T 63.209/8-3:994/1     ',
      sortable=>'T_00000063.00000209/00000008-00000003:00000994/00000001',
      normal=>'T 63.209/8-3:994/1', stem=>'T 63.209/8-3',
      agency=>'T', subagency=>'63', series=>'209',
@@ -100,7 +94,19 @@ my @accurate_strings = (
      agency=>'HE', subagency=>'1', series=>'2',
      relatedseries=>undef, document=>'AC 6/7'},
 
+    {original=>'   HE    1. 2:AC     6/7   ',
+     sortable=>'HE_00000001.00000002:AC_00000006/00000007',
+     normal=>'HE 1.2:AC 6/7', stem=>'HE 1.2',
+     agency=>'HE', subagency=>'1', series=>'2',
+     relatedseries=>undef, document=>'AC 6/7'},
+
     {original=>'XJH',
+     sortable=>'XJH',
+     normal=>'XJH', stem=>'XJH',
+     agency=>'XJH', subagency=>undef, series=>undef,
+     relatedseries=>undef, document=>undef},
+
+    {original=>'   XJH    ',
      sortable=>'XJH',
      normal=>'XJH', stem=>'XJH',
      agency=>'XJH', subagency=>undef, series=>undef,
@@ -111,7 +117,9 @@ my @accurate_strings = (
      normal=>'XJS', stem=>'XJS',
      agency=>'XJS', subagency=>undef, series=>undef,
      relatedseries=>undef, document=>undef},
+
     );
+
 subtest 'Normalization' => sub {
     for my $t (@accurate_strings) {
         subtest "Parsing $t->{original}" => sub {

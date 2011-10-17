@@ -52,6 +52,8 @@ sub parse {
     chomp($original);
     croak 'Invalid characters' if $original =~ qr{[^\p{IsAlnum}\s:/\-.<>]};
     $original = uc $original;
+    $original =~ s{^\s+|\s+$}{}g;
+    $original =~ s{\s+}{ }g;
 
     if ($original ~~ [qw(XJH XJS)]) {
       $self->agency($original);
