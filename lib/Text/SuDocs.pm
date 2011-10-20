@@ -121,3 +121,83 @@ sub sortable_string {
 
 __PACKAGE__->meta()->make_immutable();
 1;
+
+__END__
+
+=head1 NAME
+
+Text::SuDocs - Parse and normalize SuDocs numbers
+
+=head1 DESCRIPTION
+
+The United States Government Printing Office uses a "Superintendent
+of Documents (SuDocs)" classification system to uniquely identify,
+categorize, and sort documents it tracks. This package is used for
+parsing and normalizing these identifiers.
+
+=head1 METHODS
+
+=head2 my $sudocs = Text::SuDocs->new($string)
+
+Creates a new Text::SuDocs object. Its sole argument is a
+scalar containing a SuDocs string.
+
+=head2 my $string = $sudocs->agency()
+
+=head2 my $string = $sudocs->subagency()
+
+=head2 my $string = $sudocs->committee()
+
+=head2 my $string = $sudocs->series()
+
+=head2 my $string = $sudocs->relatedseries()
+
+=head2 my $string = $sudocs->document()
+
+These accessor methods are available to retrieve individual
+components of the SuDocs identifier.
+
+=head2 my $string = $sudocs->original()
+
+Accessor method for retrieving the original identifier.
+
+=head2 my $string = $sudocs->normal_string()
+
+This method returns the normalized expression of the SuDocs string.
+Normalization trims off whitespace, uppercases all alphas, and
+removes unneeded whitespace.
+
+=head2 my $string = $sudocs->sortable_string(6)
+
+This method returns the sortable expression of the SuDocs string.
+A sortable string is a normalized one with all the whitespace
+converted to underscores and all the numbers padded out with zeros.
+The default pad is eight digits, but this can be altered by passing
+in a single scalar for the pad length.
+
+=head1 BUGS
+
+Please submit bug reports to https://github.com/ctfliblime/Text-SuDocs/issues. Pull requests with fixes and enhancements are also welcome.
+
+=head1 SEE ALSO
+
+http://www.access.gpo.gov/su_docs/fdlp/pubs/explain.html
+
+=head1 LICENSE
+
+This code may be distributed under the same terms as Perl itself.
+
+Please note that these modules are not products of or supported by the
+employers of the various contributors to the code.
+
+=head1 COPYRIGHT
+
+Copyright 2011 LibLime, a Division of PTFS, Inc.
+
+=head1 AUTHORS
+
+=over 4
+
+=item * Clay Fouts (cfouts@liblime.com)
+
+=cut
