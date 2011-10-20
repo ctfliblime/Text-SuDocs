@@ -12,12 +12,13 @@ my @samples = <DATA>;
 for (@samples) {
     chomp;
     my $s = new_ok('Text::SuDocs' => [$_], $_);
-    is(uc($_), $s->normal_string);
+    is($s->normal_string, uc($_));
 }
 
 done_testing();
 
 __DATA__
+A 3.103
 HE 20.8315:1
 HE 20.8315:2
 HE 20.8315:3

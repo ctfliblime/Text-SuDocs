@@ -2,6 +2,8 @@ package Text::SuDocs;
 
 # ABSTRACT: parse and normalize SuDocs numbers
 
+use 5.10.0;
+
 use Any::Moose;
 use namespace::autoclean;
 use Carp;
@@ -54,9 +56,10 @@ sub parse {
     $original = uc $original;
     $original =~ s{^\s+|\s+$}{}g;
     $original =~ s{\s+}{ }g;
+    $original =~ s{:$}{};
 
-    if ($original ~~ [qw(XJH XJS)]) {
-      $self->agency($original);
+    if ($original =~ /^(XJH|XJS)$/) {
+      $self->agency($1);
       return $self;
     }
 
@@ -65,8 +68,8 @@ sub parse {
         (\p{IsDigit}+)\s*\.\s*                    #Subagency
         (?:(\p{IsAlpha}+)\s+)?                    #Committee
         (\p{IsDigit}+)                            #Series
-        (?:/(\p{IsAlnum}+)(-\p{IsAlnum}+)?)?\s*:\s*  #RelSeries
-        (.*)                                      #Document
+        (?:/(\p{IsAlnum}+)(-\p{IsAlnum}+)?)?\s*   #RelSeries
+        (?::\s*(.*))?$                            #Document
         }x;
     croak 'Unable to determine stem' if (!($1 && $2 && $4));
 
@@ -87,7 +90,7 @@ sub normal_string {
     my $self = shift;
     my %args = (ref $_[0]) ? %{$_[0]} : @_;
 
-    return $self->agency if ($self->agency ~~ [qw(XJH XJS)]);
+    return $self->agency if ($self->agency =~ /^(?:XJH|XJS)$/);
 
     my $sudocs = sprintf(
         '%s %d.%s%s%s',
@@ -97,7 +100,8 @@ sub normal_string {
         $self->series,
         ($self->relatedseries) ? '/'.$self->relatedseries : '',
         );
-    unless ($args{class_stem}) {
+
+    unless ($args{class_stem} || !$self->document) {
         $sudocs .= ':'.$self->document;
     }
     return $sudocs;

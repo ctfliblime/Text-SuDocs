@@ -100,7 +100,31 @@ my @accurate_strings = (
      agency=>'HE', subagency=>'1', series=>'2',
      relatedseries=>undef, document=>'AC 6/7'},
 
+    {original=>'A 3.103:',
+     sortable=>'A_00000003.00000103',
+     normal=>'A 3.103', stem=>'A 3.103',
+     agency=>'A', subagency=>'3', series=>'103',
+     relatedseries=>undef, document=>undef},
+
+    {original=>'A 3.103',
+     sortable=>'A_00000003.00000103',
+     normal=>'A 3.103', stem=>'A 3.103',
+     agency=>'A', subagency=>'3', series=>'103',
+     relatedseries=>undef, document=>undef},
+
     {original=>'XJH',
+     sortable=>'XJH',
+     normal=>'XJH', stem=>'XJH',
+     agency=>'XJH', subagency=>undef, series=>undef,
+     relatedseries=>undef, document=>undef},
+
+    {original=>'XJH:',
+     sortable=>'XJH',
+     normal=>'XJH', stem=>'XJH',
+     agency=>'XJH', subagency=>undef, series=>undef,
+     relatedseries=>undef, document=>undef},
+
+    {original=>'  XJH: ',
      sortable=>'XJH',
      normal=>'XJH', stem=>'XJH',
      agency=>'XJH', subagency=>undef, series=>undef,
