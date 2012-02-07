@@ -52,7 +52,7 @@ sub parse {
     return if ! defined $original;
 
     chomp($original);
-    croak 'Invalid characters' if $original =~ qr{[^\p{IsAlnum}\s:/\-.<>]};
+    croak 'Invalid characters' if $original =~ qr{[^\p{IsAlnum}\s:/\-.<>()]};
     $original = uc $original;
     $original =~ s{^\s+|\s+$}{}g;
     $original =~ s{\s+}{ }g;
